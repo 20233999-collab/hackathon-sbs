@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bóveda: Mi Yo del Futuro | SBS 2026</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            sbs: {
+              dark: '#000033',       // Deep Space Blue
+              light: '#FFFFFF',      // Blanco Puro
+              ice: '#e1f0fa',        // Ice Blue Tint
+              royal: '#0131a0',      // SBS Royal Blue
+              teal: '#04c4b3',       // Turquesa Tech
+              amber: '#ffb601',      // Naranja/Amarillo Recompensa Y2K
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-teal': '0 0 25px -5px rgba(4, 196, 179, 0.4)',
+            'glow-amber': '0 0 25px -5px rgba(255, 182, 1, 0.4)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    /* Hide scrollbars */
+    ::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(4, 196, 179, 0.25); }
+      50% { box-shadow: 0 0 30px rgba(4, 196, 179, 0.6); }
+    }
+    .animate-glow {
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-[#000022] text-white min-h-screen flex flex-col items-center justify-center p-2 sm:p-6 select-none">
+
+  <!-- TOP BAR: Controls for Presentation / Tablet -->
+  <header class="w-full max-w-[420px] mb-2 px-2 flex items-center justify-between text-xs">
+    <div class="flex items-center gap-1.5">
+      <span class="w-2.5 h-2.5 rounded-full bg-[#04c4b3] animate-pulse"></span>
+      <span class="font-mono font-bold tracking-wider text-white/80 text-[11px]">HACKATHON SBS 2026</span>
+    </div>
+    
+    <div class="flex items-center gap-2">
+      <!-- Fast Screen Jumper -->
+      <select id="screen-selector" onchange="switchScreen(this.value)" class="bg-white/10 text-white text-[11px] font-mono rounded-lg px-2 py-1 outline-none border border-white/20">
+        <option value="login" class="text-black">1. Login</option>
+        <option value="permissions" class="text-black">2. Permisos</option>
+        <option value="dashboard" selected class="text-black">3. Bóveda</option>
+        <option value="simulator" class="text-black">4. Simulador 60</option>
+      </select>
+
+      <!-- Theme Toggle -->
+      <button onclick="toggleDarkMode()" class="p-1.5 bg-white/10 rounded-lg border border-white/20 hover:bg-white/20 transition active:scale-95" title="Cambiar Modo Claro/Oscuro">
+        <i data-lucide="sun" id="theme-icon" class="w-3.5 h-3.5 text-[#ffb601]"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- TABLET / MOBILE CONTAINER FRAME (iPhone 15 Pro Max / iPad Friendly) -->
+  <main id="app-frame" class="w-full max-w-[400px] h-[780px] bg-[#000033] rounded-[44px] shadow-2xl relative flex flex-col overflow-hidden border-[8px] border-[#1e2238] shadow-[0_25px_60px_-15px_rgba(4,196,179,0.3)] transition-colors duration-300">
+    
+    <!-- Dynamic Island / Tablet Notch -->
+    <div class="absolute top-2.5 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full z-50 flex items-center justify-between px-3">
+      <div class="w-2.5 h-2.5 rounded-full bg-[#04c4b3]/30"></div>
+      <div class="w-2 h-2 rounded-full bg-white/20"></div>
+    </div>
+
+    <!-- MAIN APP SCREENS WRAPPER -->
+    <div class="w-full h-full pt-8 relative overflow-hidden flex flex-col">
+
+      <!-- ======================================================== -->
+      <!-- SCREEN 1: LOGIN -->
+      <!-- ======================================================== -->
+      <section id="screen-login" class="hidden flex-col h-full justify-between p-6 bg-gradient-to-b from-[#000033] via-[#000844] to-[#0131a0]/30 text-white">
+        <div>
+          <!-- Logo -->
+          <div class="flex items-center justify-between pt-2">
+            <div class="flex items-center gap-2.5">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0131a0] to-[#04c4b3] flex items-center justify-center font-display font-extrabold text-xl text-white shadow-glow-teal">
+                B
+              </div>
+              <div>
+                <span class="font-display font-bold text-lg tracking-wider block leading-tight">BÓVEDA</span>
+                <span class="text-[10px] text-[#04c4b3] font-semibold tracking-widest uppercase">SBS Previsional 2026</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-[11px] font-semibold rounded-full bg-[#04c4b3]/20 text-[#04c4b3] border border-[#04c4b3]/30">
+              Gen Z
+            </span>
+          </div>
+
+          <!-- Hero Pitch -->
+          <div class="mt-12 space-y-2">
+            <h1 class="text-3xl font-display font-bold leading-tight">
+              Tu dinero de hoy, <br>
+              construyendo a tu <br>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#04c4b3] via-[#ffb601] to-[#04c4b3]">
+                Yo del Futuro.
+              </span>
+            </h1>
+            <p class="text-xs text-white/70 leading-relaxed pt-2">
+              Cada vez que pagues con <strong class="text-white">Yape o Plin</strong>, un microahorro automático viajará silenciosamente a tu retiro.
+            </p>
+          </div>
+        </div>
+
+        <!-- Form / Access -->
+        <div class="my-auto py-4 space-y-3.5">
+          <div>
+            <div class="flex justify-between text-xs text-white/80 mb-1.5 font-medium">
+              <span>Documento de Identidad (DNI)</span>
+              <span class="text-[10px] text-[#04c4b3]">Verificado SBS</span>
+            </div>
+            <div class="relative">
+              <input type="text" value="74829103" readonly class="w-full bg-[#e1f0fa]/10 border border-white/20 rounded-2xl px-4 py-3.5 text-sm text-white font-mono tracking-wider outline-none">
+              <i data-lucide="shield-check" class="w-5 h-5 text-[#04c4b3] absolute right-3.5 top-3.5"></i>
+            </div>
+          </div>
+
+          <button onclick="switchScreen('permissions')" class="w-full py-4 rounded-2xl bg-gradient-to-r from-[#04c4b3] to-[#0131a0] hover:opacity-95 active:scale-[0.98] transition font-bold text-sm text-white shadow-glow-teal flex items-center justify-center gap-2">
+            <span>Ingresar a mi Bóveda</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+
+          <button onclick="switchScreen('permissions')" class="w-full py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-white/80 flex items-center justify-center gap-2 transition active:scale-95">
+            <i data-lucide="fingerprint" class="w-4 h-4 text-[#04c4b3]"></i>
+            <span>Acceso biométrico rápido (Face ID)</span>
+          </button>
+        </div>
+
+        <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-white/60">
+          <span class="flex items-center gap-1.5">
+            <i data-lucide="lock" class="w-3.5 h-3.5 text-[#04c4b3]"></i>
+            Supervisado por SBS
+          </span>
+          <span class="font-mono text-[10px] text-white/40">v1.0 Tablet MVP</span>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SCREEN 2: ONBOARDING / PERMISOS -->
+      <!-- ======================================================== -->
+      <section id="screen-permissions" class="hidden flex-col h-full justify-between p-6 bg-gradient-to-b from-[#000033] via-[#000844] to-[#0131a0]/20 text-white overflow-y-auto">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 rounded-full bg-[#04c4b3]/20 text-[#04c4b3] text-xs font-bold flex items-center justify-center border border-[#04c4b3]/30">1</span>
+            <span class="text-xs uppercase tracking-wider text-[#04c4b3] font-bold">Paso previo</span>
+          </div>
+          <h2 class="text-2xl font-display font-bold leading-tight">
+            Permisos y Conexión de Billeteras
+          </h2>
+          <p class="text-xs text-white/70 mt-1 leading-relaxed">
+            Autorizas la lectura de transacciones cotidianas y el desvío automático hacia tu Bóveda personal.
+          </p>
+
+          <!-- Billeteras Conectadas -->
+          <div class="mt-6 space-y-3">
+            <span class="text-[11px] font-semibold text-white/80 uppercase tracking-wider block">Billeteras Vinculadas</span>
+
+            <!-- Yape -->
+            <div class="p-3.5 rounded-2xl border bg-[#742284]/20 border-[#742284]/60 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#742284] flex items-center justify-center text-white font-bold text-sm shadow">Y</div>
+                <div>
+                  <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+                    Yape BCP
+                    <span class="text-[10px] bg-[#742284]/50 text-[#d896e8] px-1.5 py-0.5 rounded font-mono">Activo</span>
+                  </h4>
+                  <p class="text-[11px] text-white/60">Lectura de pagos QR y celular</p>
+                </div>
+              </div>
+              <div class="w-6 h-6 rounded-full bg-[#04c4b3] text-black flex items-center justify-center font-bold text-xs">✓</div>
+            </div>
+
+            <!-- Plin -->
+            <div class="p-3.5 rounded-2xl border bg-[#00a9e0]/20 border-[#00a9e0]/60 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#00a9e0] flex items-center justify-center text-white font-bold text-sm shadow">P</div>
+                <div>
+                  <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+                    Plin (BBVA, Scotiabank, Interbank)
+                    <span class="text-[10px] bg-[#00a9e0]/50 text-[#9ae5fc] px-1.5 py-0.5 rounded font-mono">Activo</span>
+                  </h4>
+                  <p class="text-[11px] text-white/60">Interoperabilidad inmediata</p>
+                </div>
+              </div>
+              <div class="w-6 h-6 rounded-full bg-[#04c4b3] text-black flex items-center justify-center font-bold text-xs">✓</div>
+            </div>
+          </div>
+
+          <!-- Permisos Legales -->
+          <div class="mt-6 space-y-3 p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-white/80">
+            <div class="flex items-start gap-2.5">
+              <span class="text-[#04c4b3] font-bold mt-0.5">✓</span>
+              <span>Acepto el <strong>débito automático fraccional</strong> según las reglas configuradas en mi Bóveda.</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <span class="text-[#04c4b3] font-bold mt-0.5">✓</span>
+              <span>Protegido bajo supervisión y estándares de seguridad de la <strong>SBS</strong>.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="switchScreen('dashboard')" class="w-full py-4 rounded-2xl font-bold text-sm bg-gradient-to-r from-[#04c4b3] to-[#0131a0] text-white shadow-glow-teal hover:opacity-95 active:scale-[0.98] transition flex items-center justify-center gap-2">
+            <span>Confirmar y Entrar a mi Bóveda</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SCREEN 3: DASHBOARD PRINCIPAL (MI YO DEL FUTURO) -->
+      <!-- ======================================================== -->
+      <section id="screen-dashboard" class="flex flex-col h-full overflow-y-auto pb-16 p-5 space-y-5 relative">
+        
+        <!-- Header Bar -->
+        <div class="flex items-center justify-between pt-1">
+          <div class="flex items-center gap-2.5">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" class="w-9 h-9 rounded-full border border-[#04c4b3]/60 object-cover">
+            <div>
+              <h3 class="text-xs font-bold text-white leading-none">Mateo Quispe</h3>
+              <span class="text-[10px] text-[#04c4b3] font-medium flex items-center gap-1 mt-0.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#04c4b3]"></span>
+                Bóveda SBS Activa
+              </span>
+            </div>
+          </div>
+
+          <button onclick="switchScreen('simulator')" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-white flex items-center gap-1.5 transition active:scale-95">
+            <i data-lucide="trending-up" class="w-3.5 h-3.5 text-[#04c4b3]"></i>
+            <span>Proyección 60</span>
+          </button>
+        </div>
+
+        <!-- Vault Main Balance Card -->
+        <div class="relative rounded-3xl p-6 bg-gradient-to-br from-[#0131a0]/30 via-[#000844] to-[#000033] border border-[#04c4b3]/30 shadow-sm overflow-hidden animate-glow">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] uppercase tracking-wider text-white/60 font-semibold">Mi Yo del Futuro</span>
+            <span class="px-2 py-0.5 rounded-full bg-[#ffb601]/15 text-[#ffb601] border border-[#ffb601]/25 text-[10px] font-bold flex items-center gap-1">
+              <i data-lucide="flame" class="w-3 h-3"></i>
+              14 días seguidos
+            </span>
+          </div>
+
+          <div class="mt-3">
+            <span class="text-[11px] text-white/50 block font-normal">Ahorro previsional acumulado</span>
+            <div class="flex items-baseline gap-1 mt-0.5">
+              <span class="text-sm font-bold text-[#04c4b3] font-mono">S/</span>
+              <span id="vault-balance-display" class="text-4xl font-display font-extrabold tracking-tight text-white">1,482.50</span>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-1.5 text-white/70">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5 text-[#04c4b3]"></i>
+              <span id="vault-monthly-display">+S/ 142.80 este mes</span>
+            </div>
+            <span class="text-[10px] text-white/50 font-mono">7% TEA Fondo SBS</span>
+          </div>
+        </div>
+
+        <!-- HERO BUTTON: SIMULADOR DE PAGO EN BILLETERA (POV REALISTA) -->
+        <button onclick="openWalletModal()" class="w-full p-4 rounded-3xl bg-gradient-to-r from-[#04c4b3] to-[#0131a0] text-white shadow-glow-teal hover:opacity-95 active:scale-[0.98] transition flex items-center justify-between group">
+          <div class="flex items-center gap-3 text-left">
+            <div class="w-11 h-11 rounded-2xl bg-black/20 flex items-center justify-center text-white">
+              <i data-lucide="wallet" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold leading-tight">Simular Pago en Billetera</h4>
+              <p class="text-xs text-white/80 mt-0.5">Paga con Yape o Plin y mira el microahorro</p>
+            </div>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+            <i data-lucide="chevron-right" class="w-4 h-4 text-white stroke-[3]"></i>
+          </div>
+        </button>
+
+        <!-- TARJETA REGLAS / EDITAR SETTINGS (SIMPLE & DISCRETA) -->
+        <div onclick="openSettingsSheet()" class="p-4 rounded-2xl bg-white/5 hover:bg-white/8 border border-white/10 transition cursor-pointer flex items-center justify-between group active:scale-[0.99]">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#0131a0]/30 border border-[#0131a0]/50 flex items-center justify-center text-[#04c4b3]">
+              <i data-lucide="sliders" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="text-xs font-bold text-white">Reglas del Microahorro</h4>
+                <span id="rule-badge" class="text-[10px] bg-[#04c4b3]/20 text-[#04c4b3] px-2 py-0.2 rounded-full font-mono font-semibold">5% activo</span>
+              </div>
+              <p id="rule-summary" class="text-[11px] text-white/60 mt-0.5">Redondeo activado • Finde 2X</p>
+            </div>
+          </div>
+          <div class="flex items-center text-xs text-white/40 group-hover:text-white/80 transition">
+            <span class="text-[11px] mr-1">Personalizar</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </div>
+        </div>
+
+        <!-- FEED DE ACTIVIDAD RECIENTE -->
+        <div class="space-y-2.5 pt-1">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-[11px] font-bold text-white/70 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="clock" class="w-3.5 h-3.5 text-[#04c4b3]"></i>
+              Últimos Microahorros
+            </span>
+            <span class="text-[10px] text-white/40">En vivo</span>
+          </div>
+
+          <div id="transactions-feed" class="space-y-1.5">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SCREEN 4: SIMULADOR PROYECTIVO A LOS 60 AÑOS -->
+      <!-- ======================================================== -->
+      <section id="screen-simulator" class="hidden flex-col h-full overflow-y-auto p-5 space-y-6 bg-gradient-to-b from-[#000033] via-[#000844] to-[#0131a0]/30 text-white">
+        <!-- Header -->
+        <div class="flex items-center justify-between pt-1">
+          <button onclick="switchScreen('dashboard')" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition flex items-center gap-1 text-xs active:scale-95">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>Volver</span>
+          </button>
+          <div class="flex items-center gap-1.5 text-xs text-[#04c4b3] font-semibold bg-[#04c4b3]/10 px-2.5 py-1 rounded-full border border-[#04c4b3]/20">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#ffb601]"></i>
+            <span>Proyección a los 62 años</span>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-2xl font-display font-bold leading-tight">El Poder de Tu Yo del Futuro</h2>
+          <p class="text-xs text-white/70 mt-1 leading-relaxed">
+            Mira cómo el microahorro imperceptible de tus compras en Yape/Plin se multiplica con el interés compuesto.
+          </p>
+        </div>
+
+        <!-- Hero Projected Amount -->
+        <div class="p-6 rounded-3xl bg-gradient-to-tr from-[#0131a0] via-[#000844] to-[#04c4b3]/20 border border-[#04c4b3]/40 shadow-glow-teal text-center relative overflow-hidden">
+          <div class="text-xs uppercase tracking-widest text-white/70 font-semibold">Fondo Estimado a tu Retiro</div>
+          <div id="future-value-display" class="mt-2 text-4xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-[#04c4b3] to-[#ffb601]">
+            S/ 94,820
+          </div>
+          <div class="mt-2 inline-flex items-center gap-1 text-[11px] text-[#04c4b3] font-medium bg-[#04c4b3]/20 px-3 py-1 rounded-full">
+            <i data-lucide="award" class="w-3.5 h-3.5 text-[#ffb601]"></i>
+            <span id="future-interest-display">+S/ 72,400 en rentabilidad previsional</span>
+          </div>
+        </div>
+
+        <!-- Interactive Sliders -->
+        <div class="space-y-4">
+          <!-- Slider 1 -->
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-white/80 font-medium">Microahorro diario estimado:</span>
+              <span id="slider-saving-val" class="font-mono font-bold text-[#04c4b3] text-sm">S/ 6.00 al día</span>
+            </div>
+            <input type="range" min="2" max="20" step="1" value="6" id="slider-saving" oninput="calculateProjection()" class="w-full accent-[#04c4b3] cursor-pointer">
+            <div class="flex justify-between text-[10px] text-white/40">
+              <span>S/ 2 mín.</span>
+              <span id="slider-month-val">~S/ 180 al mes</span>
+              <span>S/ 20</span>
+            </div>
+          </div>
+
+          <!-- Slider 2 -->
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-white/80 font-medium">Rentabilidad fondo (TEA SBS):</span>
+              <span id="slider-rate-val" class="font-mono font-bold text-[#ffb601] text-sm">7% TEA</span>
+            </div>
+            <input type="range" min="4" max="10" step="0.5" value="7" id="slider-rate" oninput="calculateProjection()" class="w-full accent-[#ffb601] cursor-pointer">
+            <div class="flex justify-between text-[10px] text-white/40">
+              <span>4% Conservador</span>
+              <span>7% Moderado</span>
+              <span>10% Crecimiento</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Educational Reassurance -->
+        <div class="p-3.5 rounded-2xl bg-[#0131a0]/30 border border-[#0131a0] flex items-start gap-2.5 text-xs text-white/80">
+          <i data-lucide="shield" class="w-5 h-5 text-[#04c4b3] shrink-0 mt-0.5"></i>
+          <p class="text-[11px] leading-tight">
+            Supervisado bajo las directivas de educación previsional de la <strong>SBS</strong>. Este ahorro no se gasta en impulsos y garantiza tu independencia financiera futura.
+          </p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- iOS Home Indicator Bar -->
+    <div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/30 rounded-full z-50 pointer-events-none"></div>
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL POV REALISTA: CHECKOUT BILLETERA DIGITAL (YAPE / PLIN) -->
+  <!-- ======================================================== -->
+  <div id="wallet-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-md">
+    <div class="relative w-full max-w-[360px] rounded-[36px] overflow-hidden shadow-2xl transition-all">
+
+      <!-- STEP 1: CONFIRMAR PAGO POV -->
+      <div id="wallet-step-confirm" class="bg-[#000033] border border-white/20 text-white p-6 flex flex-col justify-between min-h-[520px]">
+        <div>
+          <div class="flex items-center justify-between pb-4 border-b border-white/10">
+            <button onclick="closeWalletModal()" class="p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition active:scale-95">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+            <span class="text-xs font-bold tracking-wide">Mi Billetera Digital</span>
+            <div class="w-6"></div>
+          </div>
+
+          <!-- Selector Yape / Plin -->
+          <div class="mt-5 grid grid-cols-2 gap-2">
+            <button id="btn-wallet-yape" onclick="selectWalletMethod('yape')" class="py-2.5 px-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 bg-[#742284] text-white shadow-lg border border-[#d896e8]/40">
+              <span class="w-5 h-5 rounded-full bg-white text-[#742284] flex items-center justify-center text-[10px] font-black">Y</span>
+              <span>Pagar con Yape</span>
+            </button>
+
+            <button id="btn-wallet-plin" onclick="selectWalletMethod('plin')" class="py-2.5 px-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 bg-white/5 text-white/60 border border-white/10">
+              <span class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-[10px] font-black">P</span>
+              <span>Pagar con Plin</span>
+            </button>
+          </div>
+
+          <!-- Merchant Details -->
+          <div class="mt-6 text-center">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center mb-3">
+              <i data-lucide="store" class="w-7 h-7 text-[#04c4b3]"></i>
+            </div>
+            <h3 class="text-lg font-display font-bold text-white">Starbucks Coffee</h3>
+            <p class="text-xs text-white/60 mt-0.5">Av. Las Begonias 415, San Isidro</p>
+
+            <!-- Gasto Original -->
+            <div class="mt-5 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <span class="text-xs text-white/60 block">Monto del consumo</span>
+              <div class="text-3xl font-display font-extrabold text-white mt-1">S/ 24.50</div>
+            </div>
+
+            <!-- SBS Micro-saving Highlight -->
+            <div class="mt-4 p-3.5 rounded-2xl bg-[#04c4b3]/15 border border-[#04c4b3]/40 flex items-center justify-between text-left">
+              <div>
+                <div class="text-xs font-bold text-[#04c4b3] flex items-center gap-1.5">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#ffb601]"></i>
+                  <span>Regla Bóveda SBS</span>
+                </div>
+                <span id="modal-rule-desc" class="text-[11px] text-white/80 block mt-0.5">Apartas 5% + redondeo</span>
+              </div>
+              <span id="modal-saved-amount" class="text-sm font-mono font-bold text-[#04c4b3]">+S/ 2.45</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button id="btn-execute-pay" onclick="executePayment()" class="w-full py-4 rounded-2xl font-bold text-sm bg-[#742284] text-white shadow-xl hover:opacity-95 active:scale-95 transition">
+            Confirmar y Pagar S/ 24.50
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: PROCESANDO PAGO -->
+      <div id="wallet-step-processing" class="hidden bg-[#000033] border border-white/20 text-white p-8 flex flex-col items-center justify-center min-h-[520px] text-center">
+        <div class="w-16 h-16 rounded-full border-4 border-[#04c4b3] border-t-transparent animate-spin mb-6"></div>
+        <h3 class="text-lg font-display font-bold text-white">Procesando pago...</h3>
+        <p id="processing-wallet-desc" class="text-xs text-white/60 mt-1">Conectando con Yape BCP y activando Bóveda SBS</p>
+      </div>
+
+      <!-- STEP 3: VOUCHER & NOTIFICACIÓN SBS REALISTA -->
+      <div id="wallet-step-success" class="hidden bg-gradient-to-b from-[#000844] via-[#000033] to-[#0131a0]/30 border border-white/20 text-white p-6 flex flex-col justify-between min-h-[520px]">
+        <div>
+          <div class="text-center pt-2">
+            <div class="w-16 h-16 mx-auto rounded-full bg-[#04c4b3] text-black flex items-center justify-center shadow-glow-teal font-extrabold text-2xl">
+              ✓
+            </div>
+            <h3 class="text-xl font-display font-extrabold text-white mt-4">¡Pago Efectuado!</h3>
+            <span id="success-wallet-tag" class="text-xs text-[#04c4b3] font-semibold">Transacción exitosa en Yape</span>
+          </div>
+
+          <!-- NOTIFICACIÓN POV BÓVEDA SBS -->
+          <div class="mt-6 p-4 rounded-2xl bg-gradient-to-tr from-[#0131a0]/40 to-[#04c4b3]/20 border border-[#04c4b3]/50 text-left shadow-lg">
+            <div class="flex items-center justify-between pb-2 border-b border-white/10">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-white/70 flex items-center gap-1.5">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#ffb601]"></i>
+                Notificación Bóveda SBS
+              </span>
+              <span class="text-[10px] text-[#04c4b3] font-mono">Ahora</span>
+            </div>
+
+            <div class="mt-3 flex items-center justify-between">
+              <div>
+                <span class="text-xs text-white/70 block">Ahorraste automáticamente:</span>
+                <span id="success-saved-display" class="text-2xl font-display font-extrabold text-[#04c4b3]">+S/ 2.45 PEN</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] text-white/50 block">Destino:</span>
+                <span class="text-xs font-bold text-white">Mi Yo del Futuro</span>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-white/80 mt-2.5 pt-2 border-t border-white/10 leading-snug">
+              🎉 ¡Sin darte cuenta ya estás construyendo tu jubilación! Este ahorro creció un paso más.
+            </p>
+          </div>
+
+          <!-- Desglose -->
+          <div class="mt-4 p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 text-xs">
+            <div class="flex justify-between text-white/70">
+              <span>Comercio:</span>
+              <span class="font-semibold text-white">Starbucks Coffee</span>
+            </div>
+            <div class="flex justify-between text-white/70">
+              <span>Monto pagado:</span>
+              <span class="font-semibold text-white">S/ 24.50</span>
+            </div>
+            <div class="flex justify-between text-[#04c4b3] font-medium pt-1 border-t border-white/10">
+              <span>Apartado a tu retiro:</span>
+              <span id="success-saved-breakdown" class="font-mono font-bold">+S/ 2.45</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button onclick="finishPaymentFlow()" class="w-full py-4 rounded-2xl bg-[#04c4b3] hover:opacity-95 text-black font-bold text-sm shadow-glow-teal transition active:scale-95">
+            Volver a mi Bóveda
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- BOTTOM SHEET: CONFIGURACIÓN DE REGLAS SBS -->
+  <!-- ======================================================== -->
+  <div id="settings-sheet" class="hidden fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm">
+    <div class="absolute inset-0" onclick="closeSettingsSheet()"></div>
+    <div class="relative w-full max-w-[390px] bg-[#000033] border-t border-white/15 rounded-t-[32px] p-6 text-white shadow-2xl z-10 max-h-[85vh] overflow-y-auto">
+      <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-5"></div>
+
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <i data-lucide="sliders" class="w-4 h-4 text-[#04c4b3]"></i>
+          <h3 class="text-base font-display font-bold text-white">Reglas del Microahorro</h3>
+        </div>
+        <button onclick="closeSettingsSheet()" class="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white/80">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-white/70 mb-5 leading-relaxed">
+        Configura cómo tu dinero aparta para tu <strong>Yo del Futuro</strong> en cada compra.
+      </p>
+
+      <div class="space-y-4">
+        <!-- Porcentaje -->
+        <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+          <div class="flex items-center justify-between mb-2 text-xs">
+            <span class="font-semibold text-white/90">Porcentaje por compra</span>
+            <span id="sheet-pct-display" class="font-mono font-bold text-[#04c4b3]">5%</span>
+          </div>
+          <div class="grid grid-cols-4 gap-2">
+            <button onclick="setSavingsPct(3)" class="btn-pct py-2 rounded-xl text-xs font-bold transition bg-white/10 text-white/80">3%</button>
+            <button onclick="setSavingsPct(5)" class="btn-pct py-2 rounded-xl text-xs font-bold transition bg-[#04c4b3] text-black">5%</button>
+            <button onclick="setSavingsPct(8)" class="btn-pct py-2 rounded-xl text-xs font-bold transition bg-white/10 text-white/80">8%</button>
+            <button onclick="setSavingsPct(10)" class="btn-pct py-2 rounded-xl text-xs font-bold transition bg-white/10 text-white/80">10%</button>
+          </div>
+        </div>
+
+        <!-- Redondeo -->
+        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+          <div>
+            <h4 class="text-xs font-bold text-white">Redondeo al Sol Superior</h4>
+            <p class="text-[11px] text-white/60">Gasto S/ 7.30 redondea a S/ 8 (ahorra S/ 0.70)</p>
+          </div>
+          <button id="toggle-roundup" onclick="toggleRoundUp()" class="w-11 h-6 rounded-full transition-colors relative p-0.5 bg-[#04c4b3]">
+            <div id="thumb-roundup" class="w-5 h-5 rounded-full bg-white transition-transform translate-x-5"></div>
+          </button>
+        </div>
+
+        <!-- Multiplicador Finde -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-white/5 to-[#ffb601]/10 border border-[#ffb601]/20 flex items-center justify-between">
+          <div>
+            <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#ffb601]"></i>
+              Multiplicador Fin de Semana (2X)
+            </h4>
+            <p class="text-[11px] text-white/60">Duplica el ahorro los fines de semana</p>
+          </div>
+          <button id="toggle-booster" onclick="toggleBooster()" class="w-11 h-6 rounded-full transition-colors relative p-0.5 bg-[#ffb601]">
+            <div id="thumb-booster" class="w-5 h-5 rounded-full bg-black transition-transform translate-x-5"></div>
+          </button>
+        </div>
+      </div>
+
+      <button onclick="closeSettingsSheet()" class="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#04c4b3] to-[#0131a0] text-white font-semibold text-xs shadow-glow-teal hover:opacity-95 active:scale-[0.98] transition">
+        Guardar Preferencias
+      </button>
+    </div>
+  </div>
+
+  <!-- SCRIPT LOGIC (SINGLE HTML APP) -->
+  <script>
+    // State
+    const state = {
+      isDarkMode: true,
+      currentScreen: 'dashboard',
+      selectedWallet: 'yape',
+      balance: 1482.50,
+      monthly: 142.80,
+      settings: {
+        percentage: 5,
+        roundUp: true,
+        weekendBooster: true
+      },
+      transactions: [
+        { id: 1, merchant: 'Starbucks Coffee', method: 'Yape', amount: 24.50, saved: 2.45, time: 'Hoy, 09:15 AM' },
+        { id: 2, merchant: 'Tambomart San Isidro', method: 'Plin', amount: 18.20, saved: 1.82, time: 'Ayer, 08:40 PM' },
+        { id: 3, merchant: 'Uber Viajes Lima', method: 'Visa Débito', amount: 32.00, saved: 6.40, time: 'Sábado, 11:20 PM' }
+      ]
+    };
+
+    // Initialize Lucide icons & feed
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderTransactions();
+      calculateProjection();
+      updateRuleSummary();
+    });
+
+    // Screen Switching
+    function switchScreen(screenName) {
+      state.currentScreen = screenName;
+      document.getElementById('screen-selector').value = screenName;
+
+      ['login', 'permissions', 'dashboard', 'simulator'].forEach(s => {
+        const el = document.getElementById(`screen-${s}`);
+        if (s === screenName) {
+          el.classList.remove('hidden');
+          el.classList.add('flex');
+        } else {
+          el.classList.add('hidden');
+          el.classList.remove('flex');
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // Render Recent Transactions Feed
+    function renderTransactions() {
+      const feed = document.getElementById('transactions-feed');
+      feed.innerHTML = state.transactions.map(tx => `
+        <div class="p-3 rounded-2xl bg-white/5 border border-white/8 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs ${
+              tx.method === 'Yape' ? 'bg-[#742284] text-white' : tx.method === 'Plin' ? 'bg-[#00a9e0] text-black' : 'bg-[#0131a0] text-white'
+            }">
+              ${tx.method === 'Yape' ? 'Y' : tx.method === 'Plin' ? 'P' : '💳'}
+            </div>
+            <div>
+              <h4 class="text-xs font-semibold text-white leading-tight">${tx.merchant}</h4>
+              <span class="text-[10px] text-white/50">${tx.time} • S/ ${tx.amount.toFixed(2)}</span>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-mono font-bold text-[#04c4b3] block">+S/ ${tx.saved.toFixed(2)}</span>
+            <span class="text-[9px] text-white/40 font-medium">Bóveda</span>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Wallet Modal Logic
+    function openWalletModal() {
+      document.getElementById('wallet-modal').classList.remove('hidden');
+      document.getElementById('wallet-step-confirm').classList.remove('hidden');
+      document.getElementById('wallet-step-processing').classList.add('hidden');
+      document.getElementById('wallet-step-success').classList.add('hidden');
+      updateModalSavingCalculation();
+      lucide.createIcons();
+    }
+
+    function closeWalletModal() {
+      document.getElementById('wallet-modal').classList.add('hidden');
+    }
+
+    function selectWalletMethod(method) {
+      state.selectedWallet = method;
+      const btnYape = document.getElementById('btn-wallet-yape');
+      const btnPlin = document.getElementById('btn-wallet-plin');
+      const btnPay = document.getElementById('btn-execute-pay');
+
+      if (method === 'yape') {
+        btnYape.className = "py-2.5 px-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 bg-[#742284] text-white shadow-lg border border-[#d896e8]/40";
+        btnPlin.className = "py-2.5 px-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 bg-white/5 text-white/60 border border-white/10";
+        btnPay.className = "w-full py-4 rounded-2xl font-bold text-sm bg-[#742284] text-white shadow-xl hover:opacity-95 active:scale-95 transition";
+      } else {
+        btnPlin.className = "py-2.5 px-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 bg-[#00a9e0] text-black shadow-lg border border-[#9ae5fc]/60";
+        btnYape.className = "py-2.5 px-3 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition active:scale-95 bg-white/5 text-white/60 border border-white/10";
+        btnPay.className = "w-full py-4 rounded-2xl font-bold text-sm bg-[#00a9e0] text-black shadow-xl hover:opacity-95 active:scale-95 transition";
+      }
+    }
+
+    function updateModalSavingCalculation() {
+      const orig = 24.50;
+      let saved = orig * (state.settings.percentage / 100);
+      if (state.settings.roundUp) {
+        const diff = Number((Math.ceil(orig) - orig).toFixed(2));
+        saved += diff > 0 ? diff : 1.0;
+      }
+      if (state.settings.weekendBooster) {
+        saved *= 2;
+      }
+      saved = Number(saved.toFixed(2));
+
+      document.getElementById('modal-saved-amount').innerText = `+S/ ${saved.toFixed(2)}`;
+      document.getElementById('modal-rule-desc').innerText = `Apartas ${state.settings.percentage}% ${state.settings.roundUp ? '+ redondeo' : ''} ${state.settings.weekendBooster ? '(2X Finde)' : ''}`;
+    }
+
+    function executePayment() {
+      document.getElementById('wallet-step-confirm').classList.add('hidden');
+      document.getElementById('wallet-step-processing').classList.remove('hidden');
+      document.getElementById('processing-wallet-desc').innerText = `Conectando con ${state.selectedWallet === 'yape' ? 'Yape BCP' : 'Plin'} y activando Bóveda SBS`;
+
+      setTimeout(() => {
+        const orig = 24.50;
+        let saved = orig * (state.settings.percentage / 100);
+        if (state.settings.roundUp) {
+          const diff = Number((Math.ceil(orig) - orig).toFixed(2));
+          saved += diff > 0 ? diff : 1.0;
+        }
+        if (state.settings.weekendBooster) saved *= 2;
+        saved = Number(saved.toFixed(2));
+
+        // Update balance
+        state.balance = Number((state.balance + saved).toFixed(2));
+        state.monthly = Number((state.monthly + saved).toFixed(2));
+        document.getElementById('vault-balance-display').innerText = state.balance.toLocaleString('es-PE', { minimumFractionDigits: 2 });
+        document.getElementById('vault-monthly-display').innerText = `+S/ ${state.monthly.toFixed(2)} este mes`;
+
+        // Update success modal
+        document.getElementById('success-saved-display').innerText = `+S/ ${saved.toFixed(2)} PEN`;
+        document.getElementById('success-saved-breakdown').innerText = `+S/ ${saved.toFixed(2)}`;
+        document.getElementById('success-wallet-tag').innerText = `Transacción exitosa en ${state.selectedWallet === 'yape' ? 'Yape' : 'Plin'}`;
+
+        // Add to transactions
+        state.transactions.unshift({
+          id: Date.now(),
+          merchant: 'Starbucks Coffee',
+          method: state.selectedWallet === 'yape' ? 'Yape' : 'Plin',
+          amount: orig,
+          saved: saved,
+          time: 'Justo ahora'
+        });
+        renderTransactions();
+
+        document.getElementById('wallet-step-processing').classList.add('hidden');
+        document.getElementById('wallet-step-success').classList.remove('hidden');
+        lucide.createIcons();
+      }, 1200);
+    }
+
+    function finishPaymentFlow() {
+      closeWalletModal();
+    }
+
+    // Settings Sheet Logic
+    function openSettingsSheet() {
+      document.getElementById('settings-sheet').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeSettingsSheet() {
+      document.getElementById('settings-sheet').classList.add('hidden');
+      updateRuleSummary();
+      updateModalSavingCalculation();
+    }
+
+    function setSavingsPct(pct) {
+      state.settings.percentage = pct;
+      document.getElementById('sheet-pct-display').innerText = `${pct}%`;
+      document.querySelectorAll('.btn-pct').forEach(btn => {
+        if (btn.innerText.includes(`${pct}%`)) {
+          btn.className = "btn-pct py-2 rounded-xl text-xs font-bold transition bg-[#04c4b3] text-black";
+        } else {
+          btn.className = "btn-pct py-2 rounded-xl text-xs font-bold transition bg-white/10 text-white/80";
+        }
+      });
+      updateRuleSummary();
+    }
+
+    function toggleRoundUp() {
+      state.settings.roundUp = !state.settings.roundUp;
+      const toggle = document.getElementById('toggle-roundup');
+      const thumb = document.getElementById('thumb-roundup');
+      if (state.settings.roundUp) {
+        toggle.className = "w-11 h-6 rounded-full transition-colors relative p-0.5 bg-[#04c4b3]";
+        thumb.className = "w-5 h-5 rounded-full bg-white transition-transform translate-x-5";
+      } else {
+        toggle.className = "w-11 h-6 rounded-full transition-colors relative p-0.5 bg-white/20";
+        thumb.className = "w-5 h-5 rounded-full bg-white transition-transform translate-x-0";
+      }
+      updateRuleSummary();
+    }
+
+    function toggleBooster() {
+      state.settings.weekendBooster = !state.settings.weekendBooster;
+      const toggle = document.getElementById('toggle-booster');
+      const thumb = document.getElementById('thumb-booster');
+      if (state.settings.weekendBooster) {
+        toggle.className = "w-11 h-6 rounded-full transition-colors relative p-0.5 bg-[#ffb601]";
+        thumb.className = "w-5 h-5 rounded-full bg-black transition-transform translate-x-5";
+      } else {
+        toggle.className = "w-11 h-6 rounded-full transition-colors relative p-0.5 bg-white/20";
+        thumb.className = "w-5 h-5 rounded-full bg-white transition-transform translate-x-0";
+      }
+      updateRuleSummary();
+    }
+
+    function updateRuleSummary() {
+      document.getElementById('rule-badge').innerText = `${state.settings.percentage}% activo`;
+      document.getElementById('rule-summary').innerText = `${state.settings.roundUp ? 'Redondeo activado' : 'Sin redondeo'} • ${state.settings.weekendBooster ? 'Finde 2X' : 'Normal'}`;
+    }
+
+    // Projection calculation
+    function calculateProjection() {
+      const daily = Number(document.getElementById('slider-saving').value);
+      const rate = Number(document.getElementById('slider-rate').value);
+
+      document.getElementById('slider-saving-val').innerText = `S/ ${daily}.00 al día`;
+      document.getElementById('slider-month-val').innerText = `~S/ ${daily * 30} al mes`;
+      document.getElementById('slider-rate-val').innerText = `${rate}% TEA`;
+
+      const years = 40;
+      const months = years * 12;
+      const monthlyDeposit = daily * 30;
+      const monthlyRate = (rate / 100) / 12;
+
+      const futureValue = (
+        state.balance * Math.pow(1 + monthlyRate, months) +
+        monthlyDeposit * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate)
+      );
+
+      const totalInvested = state.balance + (monthlyDeposit * months);
+      const totalInterest = futureValue - totalInvested;
+
+      document.getElementById('future-value-display').innerText = `S/ ${Math.round(futureValue).toLocaleString('es-PE')}`;
+      document.getElementById('future-interest-display').innerText = `+S/ ${Math.round(totalInterest).toLocaleString('es-PE')} en rentabilidad previsional`;
+    }
+
+    // Theme Toggle
+    function toggleDarkMode() {
+      state.isDarkMode = !state.isDarkMode;
+      const frame = document.getElementById('app-frame');
+      const icon = document.getElementById('theme-icon');
+
+      if (state.isDarkMode) {
+        frame.classList.add('bg-[#000033]', 'border-[#1e2238]');
+        frame.classList.remove('bg-white', 'border-slate-300');
+        icon.setAttribute('data-lucide', 'sun');
+      } else {
+        frame.classList.remove('bg-[#000033]', 'border-[#1e2238]');
+        frame.classList.add('bg-white', 'border-slate-300');
+        icon.setAttribute('data-lucide', 'moon');
+      }
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
